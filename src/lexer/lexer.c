@@ -164,7 +164,9 @@ static ScanResult lexer_scan_next(Lexer *lexer) {
 }
 
 
-extern TokenList *lexer_tokenize(char *source, size_t source_length) {
+extern TokenListResult lexer_tokenize(char *source, size_t source_length) {
+    TokenListResult result;
+    
     Lexer lexer = {
         .source = source,
         .source_length = source_length,
@@ -176,11 +178,20 @@ extern TokenList *lexer_tokenize(char *source, size_t source_length) {
     };
 
     while (lexer_has_next(&lexer)) {
-        lexer_scan_next(&lexer);
+        ScanResult error = lexer_scan_next(&lexer);
         lexer.token_start = lexer.position;
+
+        if (error.failed) {
+            result.failed = true;
+            result.error = error.error;
+            return result;
+        }
     }
 
     lexer_add_token(&lexer, TOKEN_EOF);
 
-    return lexer.tokens_begin;
+    result.failed = false;
+    result.tokens = lexer.tokens_begin;
+
+    return result;
 }

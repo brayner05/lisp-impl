@@ -2,6 +2,7 @@
 #define TOKEN_H
 #include <stdbool.h>
 #include "../util_types.h"
+#include "../lisp/error.h"
 
 typedef enum {
     // Operator tokens
@@ -32,18 +33,42 @@ typedef struct {
 } LispToken;
 
 
+typedef struct {
+    bool failed;
+    union {
+        LispToken *token;
+        LispError *error;
+    };
+} TokenResult;
+
+
+/**
+ * Check if a token is an operator.
+ * 
+ * @param token The token to check.
+ * @return Whether the token is an operator token or not.
+ */
 inline static bool token_is_operator(LispToken *token) {
     switch (token->type) {
         case TOKEN_PLUS:
         case TOKEN_MINUS:
         case TOKEN_ASTERISK:
-        case TOKEN_SLASH:
+        case TOKEN_SLASH: {
             return true;
+        }
+        default: return false;
     }
     return false;
 }
 
 
+/**
+ * Get the string representation of a `LispTokenType`.
+ * 
+ * @param type The type to get as a string.
+ * @return The string representation of the token type, or
+ * "<UNDEFINED>".
+ */
 inline static const char *token_type_to_string(LispTokenType type) {
     switch (type) {
         case TOKEN_PLUS: return "PLUS";
@@ -65,5 +90,13 @@ inline static const char *token_type_to_string(LispTokenType type) {
         default: return "<UNDEFINED>";
     }
 }
+
+/**
+ * Get the string representation of a token.
+ * 
+ * @param token The token of which to get the string representation.
+ * @return A pointer to a string representing the data in `token`.
+ */
+extern const char *token_to_string(LispToken *token);
 
 #endif

@@ -3,7 +3,7 @@
 
 #include "token.h"
 
-extern const char *token_to_string(LispToken *token) {
+extern char *token_to_string(LispToken *token) {
     if (token == NULL) {
         return NULL;
     }

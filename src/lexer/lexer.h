@@ -20,6 +20,12 @@ typedef struct {
 } TokenListResult;
 
 
+/**
+ * Scan `source` and create a list of tokens based on the content.
+ * @return a `TokenListResult` tracking whether or not the tokenization has
+ * succeeded, if not the `TokenListResult` will contain and error, otherwise
+ * it will contain a `TokenList`.
+ */
 extern TokenListResult lexer_tokenize(char *source, size_t source_length);
 
 

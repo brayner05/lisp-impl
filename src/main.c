@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 #include "util_types.h"
 #include "lisp/error.h"
@@ -30,24 +32,25 @@ terminate_string:
 static void report_error(LispError *error) {
     switch (error->type) {
         case LISP_INTERNAL_ERROR: {
-            fprintf(stderr, "error: %s\n", error->message);
+            fprintf(stderr, "\x1b[31merror:\x1b[0m %s\n", error->message);
             break;
         }
         case LISP_LEXER_ERROR: {
-            fprintf(stderr, "%u:%u: error: %s\n", 
+            fprintf(stderr, "%u:%u: \x1b[31merror:\x1b[0m %s\n", 
                 error->lexer_error.line, 
                 error->lexer_error.column,
                 error->message);
             break;
         }
         case LISP_PARSER_ERROR: {
-            fprintf(stderr, "%u:%u: error: %s\n", 
+            fprintf(stderr, "%u:%u: \x1b[31merror:\x1b[0m %s\n", 
                 error->parser_error.line, 
                 error->parser_error.column,
                 error->message);
             break;
         }
     }
+    free(error);
 }
 
 
@@ -56,13 +59,25 @@ static void run_repl(void) {
     size_t line_length = 0;
     while (1) {
         next_line(buffer, "lisp", &line_length);
+        if (strncmp(buffer, ".quit", sizeof(".quit")) == 0) {
+            break;
+        }
+
         TokenListResult lexer_result = lexer_tokenize(buffer, line_length);
         if (lexer_result.failed) {
             report_error(lexer_result.error);
             continue;
         }
         TokenList *tokens = lexer_result.tokens;
-        (void) tokens;
+        while (tokens != NULL) {
+            TokenList *next = tokens->next;
+            char *repr = token_to_string(tokens->token);
+            puts(repr);
+            free(repr);
+            free(tokens->token);
+            free(tokens);
+            tokens = next;
+        }
     }
 }
 

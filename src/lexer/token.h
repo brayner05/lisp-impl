@@ -5,6 +5,8 @@
 #include "../lisp/error.h"
 
 typedef enum {
+    TOKEN_INVALID,
+    
     // Operator tokens
     TOKEN_PLUS, TOKEN_MINUS, TOKEN_ASTERISK, TOKEN_SLASH,
 
@@ -16,7 +18,7 @@ typedef enum {
 
     // Literal tokens
     TOKEN_INTEGER, TOKEN_FLOAT, TOKEN_STRING,
-    TOKEN_TRUE, TOKEN_FALSE, TOKEN_NIL,
+    TOKEN_TRUE, TOKEN_FALSE, TOKEN_NIL, TOKEN_IDENTIFIER,
 
     // Miscellaneous tokens
     TOKEN_EOF
@@ -87,6 +89,8 @@ inline static const char *token_type_to_string(LispTokenType type) {
         case TOKEN_FALSE: return "BOOLEAN(FALSE)";
         case TOKEN_NIL: return "NIL";
         case TOKEN_EOF: return "EOF";
+        case TOKEN_IDENTIFIER: return "IDENTIFIER";
+        case TOKEN_INVALID: return "<INVALID>";
         default: return "<UNDEFINED>";
     }
 }
@@ -97,6 +101,6 @@ inline static const char *token_type_to_string(LispTokenType type) {
  * @param token The token of which to get the string representation.
  * @return A pointer to a string representing the data in `token`.
  */
-extern const char *token_to_string(LispToken *token);
+extern char *token_to_string(LispToken *token);
 
 #endif

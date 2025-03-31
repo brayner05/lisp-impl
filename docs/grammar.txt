@@ -1,6 +1,7 @@
 Declaration         ::= '(' Expression ')'
 Expression          ::= FunctionDefinition | IfStatement | LambdaExpression
                         | FunctionCall | VariableDeclaration | Identifier | Literal
+                        | Grouping
 
 FunctionDefinition  ::= 'define' '(' ParamList ')'
 ParamList           ::= Identifier ParamList | ε
@@ -9,6 +10,9 @@ ParamList           ::= Identifier ParamList | ε
 # which would return the function `my_func` rather than call it.
 FunctionCall        ::= Identifier '(' ArgumentList ')'
 ArgumentList        ::= Argument ArgumentList | ε
+
+Grouping            ::= 'group' ExpressionList
+ExpressionList      ::= Expression ExpressionList | ε
 
 IfStatement         ::= 'if' '(' Expression ')' '(' Expression ')' '(' Expression ')'
 

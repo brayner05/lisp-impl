@@ -356,6 +356,8 @@ static void initialize_keywords(void) {
     create_keyword(TOKEN_NIL, "nil");
     create_keyword(TOKEN_FALSE, "false");
     create_keyword(TOKEN_TRUE, "true");
+    create_keyword(TOKEN_GROUP, "group");
+    create_keyword(TOKEN_IF, "if");
 }
 
 

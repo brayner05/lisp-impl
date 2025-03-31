@@ -14,7 +14,8 @@ typedef enum {
     TOKEN_LPAREN, TOKEN_RPAREN,
 
     // Keyword tokens
-    TOKEN_DEFINE, TOKEN_VAR, TOKEN_LAMBDA,
+    TOKEN_DEFINE, TOKEN_VAR, TOKEN_LAMBDA, TOKEN_GROUP,
+    TOKEN_IF,
 
     // Literal tokens
     TOKEN_INTEGER, TOKEN_FLOAT, TOKEN_STRING,
@@ -96,6 +97,7 @@ inline static const char *token_type_to_string(LispTokenType type) {
         case TOKEN_NIL: return "NIL";
         case TOKEN_EOF: return "EOF";
         case TOKEN_IDENTIFIER: return "IDENTIFIER";
+        case TOKEN_GROUP: return "GROUP";
         case TOKEN_INVALID: return "<INVALID>";
         default: return "<UNDEFINED>";
     }

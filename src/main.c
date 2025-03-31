@@ -6,6 +6,7 @@
 #include "lisp/error.h"
 #include "lexer/token.h"
 #include "lexer/lexer.h"
+#include "parser/parser.h"
 
 #define MAX_LINE_LENGTH 0x400
 
@@ -69,6 +70,7 @@ static void run_repl(void) {
             continue;
         }
         TokenList *tokens = lexer_result.tokens;
+        parser_build_ast(tokens);
         while (tokens != NULL) {
             TokenList *next = tokens->next;
             char *repr = token_to_string(tokens->token);

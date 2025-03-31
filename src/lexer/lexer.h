@@ -5,11 +5,6 @@
 #include "token.h"
 #include "../lisp/error.h"
 
-typedef struct TokenList {
-    LispToken *token;
-    struct TokenList *next;
-} TokenList;
-
 
 typedef struct {
     bool failed;

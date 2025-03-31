@@ -35,6 +35,12 @@ typedef struct {
 } LispToken;
 
 
+typedef struct TokenList {
+    LispToken *token;
+    struct TokenList *next;
+} TokenList;
+
+
 typedef struct {
     bool failed;
     union {

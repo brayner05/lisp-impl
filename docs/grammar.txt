@@ -1,0 +1,19 @@
+Declaration         ::= '(' Expression ')'
+Expression          ::= FunctionDefinition | IfStatement | LambdaExpression
+                        | FunctionCall | VariableDeclaration | Identifier | Literal
+
+FunctionDefinition  ::= 'define' '(' ParamList ')'
+ParamList           ::= Identifier ParamList | ε
+
+# Enforce parameters on all function calls. Ex: `(my_func ())` and not `(my_func)`,
+# which would return the function `my_func` rather than call it.
+FunctionCall        ::= Identifier '(' ArgumentList ')'
+ArgumentList        ::= Argument ArgumentList | ε
+
+IfStatement         ::= 'if' '(' Expression ')' '(' Expression ')' '(' Expression ')'
+
+LambdaExpression    ::= 'lambda' '(' ParamList ')' '(' Expression ')'
+
+# Variables can be declared like: `(var x)` and `(var x 2)`
+VariableDeclaration ::= 'var' Identifier InitialValue
+InitialValue        ::= Identifier | Literal | ε
